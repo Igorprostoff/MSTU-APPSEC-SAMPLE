@@ -10,14 +10,21 @@ on:
     branches: [ "master" ]
 
 jobs:
+  semgrep:
+    name: Scan
+    runs-on: ubuntu-latest
 
+    container:
+      image: returntocorp/semgrep
+    steps:
+      - uses: actions/checkout@v3
+      - run: semgrep ci
+        env:
+           SEMGREP_RULES: p/default
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-
-    - name: semgrep-scan
-      uses: returntocorp/semgrep-action@v1
       
     - name: Set up Go
       uses: actions/setup-go@v3
